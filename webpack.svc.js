@@ -4,7 +4,7 @@ const path = require("path");
 const config = {
     entry: ["./src/service/start.ts"],
     output: {
-        path: path.resolve(__dirname, ".", "dist", "service"),
+        path: path.resolve(__dirname, ".", "dist"),
         filename: "start.js",
     },
     module: {
