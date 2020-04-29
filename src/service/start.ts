@@ -1,9 +1,14 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import path from 'path';
 
 const app = express();
-app.use(express.json());
+const router = app.router;
 
-app.get('/', function (req: express.Request, res: express.Response) {
+app.use(bodyParser.json({ type: 'application/json' })).use(router);
+// app.use(app. static(path.resolve(__dirname, 'website')));
+
+app.post('/', function (req: express.Request, res: express.Response) {
     res.send('GET request to homepage')
 })
 

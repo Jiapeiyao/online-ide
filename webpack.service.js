@@ -10,10 +10,10 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.ts(x)?$/,
-                use: ["awesome-typescript-loader"],
+                test: /\.(ts|js)x?$/,
+                use: 'babel-loader',
                 exclude: /node_modules/,
-            }
+            },
         ],
     },
     resolve: {

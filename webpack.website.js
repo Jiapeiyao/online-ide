@@ -1,21 +1,24 @@
 const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+
+const websitePath = path.resolve(__dirname, ".", "dist", "website");
 
 const config = {
-    entry: ["react-hot-loader/patch", "./src/project/index.tsx"],
+    entry: ["react-hot-loader/patch", "./src/website/index.tsx"],
     output: {
-        path: path.resolve(__dirname, "..", "dist"),
+        path: websitePath,
         filename: "[name].[contenthash].js",
     },
     devServer: {
-        contentBase: "./dist",
+        contentBase: websitePath,
     },
     module: {
         rules: [
             {
-                test: /\.ts(x)?$/,
-                use: ["awesome-typescript-loader"],
+                test: /\.(ts|js)x?$/,
+                use: 'babel-loader',
                 exclude: /node_modules/,
             },
             {
@@ -66,8 +69,8 @@ const config = {
                 use: ["style-loader", "css-loader", "less-loader"],
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: "url-loader",
+                test: /\.(png|svg|jpg|gif|ttf)$/,
+                use: "url-loader?limit=100000",
             },
         ],
     },
@@ -84,6 +87,10 @@ const config = {
             appMountId: "app",
             filename: "index.html",
         }),
+        new MonacoWebpackPlugin({
+            // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+            languages: ['typescript', 'javascript', 'less']
+        })
     ],
     optimization: {
         runtimeChunk: "single",
