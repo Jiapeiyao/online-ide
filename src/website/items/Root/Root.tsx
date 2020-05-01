@@ -1,7 +1,8 @@
 import React from 'react';
 
 interface ContextState {
-    value: string;
+    tsx: string;
+    hash: string;
 }
 
 type Action = Partial<ContextState> & {
@@ -12,8 +13,8 @@ type Dispatch = React.Dispatch<Action>;
 
 const contextReducer: React.Reducer<ContextState, Action> = (preState: ContextState, action: Action) => {
     switch (action.type) {
-        case 'value': {
-            return { ...preState, value: action.value || '' };
+        case 'tsx': {
+            return { ...preState, tsx: action.tsx || '' };
         }
         default: {
             return preState;
@@ -22,7 +23,15 @@ const contextReducer: React.Reducer<ContextState, Action> = (preState: ContextSt
 }
 
 const defaultState: ContextState = {
-    value: '',
+    tsx: [
+        "import React from 'react';",
+        "import { Button } from 'antd';",
+        "",
+        "export default function App() {",
+        "    return <Button>Hello World</Button>;",
+        "}"
+    ].join('\n'),
+    hash: '',
 }
 
 const defaultContext: [ContextState, Dispatch] = [defaultState, (_: Action) => {}];

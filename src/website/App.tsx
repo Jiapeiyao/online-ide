@@ -6,7 +6,6 @@ import Root, { GlobalContext } from './items/Root';
 import SplitPane from 'react-split-pane';
 
 export default function App() {
-
     const [width, setWidth] = React.useState('100%' as number | string);
 
     return (
@@ -14,7 +13,7 @@ export default function App() {
             <Root>
                 <Menu />
                 <div id='ol-ide-main'>
-                    <SplitPane split='vertical' defaultSize={'50%'} onChange={setWidth}>
+                    <SplitPane split='vertical' size={window.screen.width * 0.5} onChange={setWidth}>
                         <Editor width={width} />
                         <Preview />
                     </SplitPane>

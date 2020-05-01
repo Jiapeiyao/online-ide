@@ -1,18 +1,17 @@
 import React from 'react';
 import MonacoEditor, { ChangeHandler, EditorDidMount } from 'react-monaco-editor';
-import { GlobalContext } from '../Root'; 
+import { GlobalContext } from '../Root';
 
 interface EditorProps {
     width: number | string;
 }
 
 export default function Editor({ width }: EditorProps) {
-
     const [context, dispatch] = React.useContext(GlobalContext);
-    const onChange: ChangeHandler = (newValue, event) => {
+    const onChange: ChangeHandler = (newTsx, event) => {
         dispatch({
-            type: 'value',
-            value: newValue,
+            type: 'tsx',
+            tsx: newTsx,
         });
     }
 
@@ -32,7 +31,7 @@ export default function Editor({ width }: EditorProps) {
         <MonacoEditor
             width={width}
             height='100%'
-            value={context.value}
+            value={context.tsx}
             language='typescript'
             theme='vs-dark'
             editorDidMount={editorDidMount}

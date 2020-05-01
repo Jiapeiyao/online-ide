@@ -1,42 +1,55 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+import webpack from 'webpack';
+import path from 'path';
 
-const websitePath = path.resolve(__dirname, ".", "dist", "website");
+const websitePath = path.resolve(__dirname, 'website');
+const projectPath = path.resolve(__dirname, 'project');
+
+const babelrc = {
+    presets: [
+        '@babel/preset-env',
+        '@babel/preset-react',
+        '@babel/preset-typescript'
+    ],
+    plugins: [
+        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-proposal-object-rest-spread',
+        '@babel/plugin-transform-runtime'
+    ]
+}
 
 const postcssLoaderOptions = {
     plugins: [require('autoprefixer')],
     javascriptEnabled: true,
 };
 
-const config = {
-    entry: ["./src/website/index.tsx"],
+const config: webpack.Configuration = {
+    mode: 'production',
+    entry: path.resolve(projectPath, 'entry.tsx'),
     output: {
         path: websitePath,
-        filename: "app.js",
-    },
-    devServer: {
-        contentBase: websitePath,
+        filename: 'preview.[hash].js',
     },
     module: {
         rules: [
             {
                 test: /\.(ts|js)x?$/,
-                use: 'babel-loader',
+                loader: 'babel-loader',
+                options: babelrc,
+                include: projectPath,
                 exclude: /node_modules/,
             },
             {
                 test: /\.css$/,
                 use: [
-                    "style-loader",
+                    'style-loader',
                     {
-                        loader: "css-loader",
+                        loader: 'css-loader',
                         options: {
                             importLoaders: 1,
                         },
                     },
                     {
-                        loader: "postcss-loader",
+                        loader: 'postcss-loader',
                         options: postcssLoaderOptions,
                     },
                 ],
@@ -45,16 +58,16 @@ const config = {
             {
                 test: /\.css$/,
                 use: [
-                    "style-loader",
+                    'style-loader',
                     {
-                        loader: "css-loader",
+                        loader: 'css-loader',
                         options: {
                             importLoaders: 1,
                             modules: true,
                         },
                     },
                     {
-                        loader: "postcss-loader",
+                        loader: 'postcss-loader',
                         options: postcssLoaderOptions,
                     },
                 ],
@@ -62,11 +75,11 @@ const config = {
             },
             {
                 test: /\.less$/,
-                use: ["style-loader", "css-loader", "less-loader"],
+                use: ['style-loader', 'css-loader', 'less-loader'],
             },
             {
                 test: /\.(png|svg|jpg|gif|ttf)$/,
-                use: "url-loader?limit=100000",
+                use: 'url-loader',
             },
         ],
     },
@@ -79,22 +92,8 @@ const config = {
         /^(antd|react|react\-dom)(\/[a-z0-9]*)*$/i,
     ],
     resolve: {
-        extensions: [".tsx", ".ts", ".js"]
+        extensions: ['.tsx', '.ts', '.js']
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src', 'website', 'index.html'),
-            inject: true,
-            appMountId: "app",
-            filename: "index.html",
-        }),
-        new MonacoWebpackPlugin({
-            // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-            languages: ['typescript', 'javascript', 'less', 'typescriptreact']
-        })
-    ],
 };
 
-module.exports = (env, argv) => {
-    return config;
-};
+export default config;
