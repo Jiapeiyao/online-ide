@@ -6,10 +6,11 @@
   "scripts": {
     "dev:service": "tsc --project tsconfig.service.json --watch",
     "dev:website": "webpack --config webpack.website.js -d --mode development --watch",
-    "start": "bash prestart.sh && nodemon ./dist/start.js",
+    "dev:start": "bash prestart.sh && nodemon ./dist/start.js",
     "build:service": "tsc --project tsconfig.service.json",
     "build:website": "webpack --config webpack.website.js -p --mode production",
-    "build": "npm run build:service && npm run build:website"
+    "build": "npm run build:service && npm run build:website && bash prestart.sh",
+    "start": "node ./dist/start.js"
   },
   "repository": {
     "type": "git",

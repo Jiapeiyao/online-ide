@@ -5,8 +5,7 @@ interface WebpackResult {
     code: number;
     message?: string | string[];
     hash?: string;
-    info?: Object | Object[];
-    script: string;
+    script?: string;
 }
 
 export default function Menu() {
@@ -21,16 +20,18 @@ export default function Menu() {
             headers: { 'content-type': 'application/json' },
             method: 'POST',
         }).then(response => response.json()).then(
-            ({code, hash, message, script, info}: WebpackResult) => {
+            ({ code, hash, message, script }: WebpackResult) => {
                 if (code === 200) {
                     dispatch({
                         type: 'hash',
                         hash: hash || ''
                     });
                     const newNode = document.createElement('SCRIPT');
-                    newNode.innerHTML = script;
-                    document.body.appendChild(newNode);
-                    setNode(newNode);
+                    if (script) {
+                        newNode.innerHTML = script || '';
+                        document.body.appendChild(newNode);
+                        setNode(newNode);
+                    }
                 } else {
                     console.log(message);
                 }
