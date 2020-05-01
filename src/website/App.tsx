@@ -7,6 +7,13 @@ import SplitPane from 'react-split-pane';
 
 export default function App() {
     const [width, setWidth] = React.useState('100%' as number | string);
+    const [height, setHeight] = React.useState('100%' as number | string);
+
+    React.useEffect(() => {
+        window.addEventListener('resize', (e) => {
+            setHeight(window.screen.height - 48);
+        })
+    }, []);
 
     return (
         <React.Fragment>
@@ -14,7 +21,7 @@ export default function App() {
                 <Menu />
                 <div id='ol-ide-main'>
                     <SplitPane split='vertical' size={window.screen.width * 0.5} onChange={setWidth}>
-                        <Editor width={width} />
+                        <Editor width={width} height={height}/>
                         <Preview />
                     </SplitPane>
                 </div>

@@ -40,6 +40,10 @@ export default function Menu() {
     };
 
     React.useEffect(() => {
+        run().catch();
+    }, []);
+
+    React.useEffect(() => {
         return () => {
             if (node !== null) {
                 document.body.removeChild(node);

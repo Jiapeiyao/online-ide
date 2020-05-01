@@ -4,9 +4,10 @@ import { GlobalContext } from '../Root';
 
 interface EditorProps {
     width: number | string;
+    height: number | string;
 }
 
-export default function Editor({ width }: EditorProps) {
+export default function Editor({ width, height }: EditorProps) {
     const [context, dispatch] = React.useContext(GlobalContext);
     const onChange: ChangeHandler = (newTsx, event) => {
         dispatch({
@@ -30,7 +31,7 @@ export default function Editor({ width }: EditorProps) {
     return  (
         <MonacoEditor
             width={width}
-            height='100%'
+            height={height}
             value={context.tsx}
             language='typescript'
             theme='vs-dark'
