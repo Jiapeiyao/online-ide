@@ -25,3 +25,8 @@ npm start
 
 ## open
 open http://localhost:8080 in chrome.
+
+## how to be better (some thoughts)
+1. nginx balance load with multiply nodejs servers
+2. better webpack config to speed up packing
+3. one project with webpack-dev-server per docker container

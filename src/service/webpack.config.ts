@@ -1,6 +1,10 @@
 import webpack from 'webpack';
 import path from 'path';
 
+// tslint:disable-next-line: no-var-requires
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const smp = new SpeedMeasurePlugin();
+
 const websitePath = path.resolve(__dirname, 'website');
 const projectPath = path.resolve(__dirname, 'project');
 
@@ -17,10 +21,13 @@ const babelrc = {
     ]
 }
 
-const postcssLoaderOptions = {
-    plugins: [require('autoprefixer')],
-    javascriptEnabled: true,
-};
+// const postcssLoader = {
+//     loader: 'postcss-loader',
+//     options: {
+//         plugins: [require('autoprefixer')],
+//         javascriptEnabled: true,
+//     },
+// };
 
 const config: webpack.Configuration = {
     mode: 'production',
@@ -33,10 +40,17 @@ const config: webpack.Configuration = {
         rules: [
             {
                 test: /\.(ts|js)x?$/,
-                loader: 'babel-loader',
-                options: babelrc,
+                use:[
+                    // {
+                    //     loader: 'thread-loader',
+                    //     options: jsWorkerPool
+                    // },
+                    {
+                        loader: 'babel-loader',
+                        options: babelrc,
+                    }
+                ],
                 include: projectPath,
-                exclude: /node_modules/,
             },
             {
                 test: /\.css$/,
@@ -47,11 +61,7 @@ const config: webpack.Configuration = {
                         options: {
                             importLoaders: 1,
                         },
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: postcssLoaderOptions,
-                    },
+                    }
                 ],
                 exclude: /\.module\.css$/,
             },
@@ -65,11 +75,7 @@ const config: webpack.Configuration = {
                             importLoaders: 1,
                             modules: true,
                         },
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: postcssLoaderOptions,
-                    },
+                    }
                 ],
                 include: /\.module\.css$/,
             },
@@ -92,8 +98,8 @@ const config: webpack.Configuration = {
         /^(antd|react|react\-dom)(\/[a-z0-9]*)*$/i,
     ],
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js', '.css']
     },
 };
 
-export default config;
+export default smp.wrap(config);

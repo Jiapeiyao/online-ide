@@ -42,7 +42,6 @@
         "no-invalid-template-strings": true,
         "no-invalid-this": [true, "check-function-in-method"],
         "no-misused-new": true,
-        "no-null-undefined-union": true,
         "no-object-literal-type-assertion": [true],
         "no-promise-as-boolean": true,
         "no-return-await": true,
