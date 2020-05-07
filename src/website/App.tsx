@@ -10,17 +10,21 @@ export default function App() {
     const [height, setHeight] = React.useState('100%' as number | string);
 
     React.useEffect(() => {
-        window.addEventListener('resize', (_: UIEvent) => {
-            setHeight(window.screen.height - 40);
-        });
-    }, []);
+        const resizeHandler = (_: UIEvent) => {
+            setHeight(window.innerHeight);
+        }
+        window.addEventListener('resize', resizeHandler);
+        return () => window.removeEventListener('resize', resizeHandler);
+    }, [])
 
     return (
         <React.Fragment>
             <Root>
-                <Menu />
                 <div id='ol-ide-main'>
-                    <SplitPane split='vertical' size={window.screen.width * 0.5} onChange={setWidth}>
+                    <Menu />
+                    <SplitPane className='ol-ide-split-pane' split='vertical'
+                        size={window.innerWidth * 0.5} onChange={setWidth}
+                    >
                         <Editor width={width} height={height}/>
                         <Preview />
                     </SplitPane>
